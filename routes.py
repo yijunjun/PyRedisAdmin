@@ -58,6 +58,7 @@ def db_tree():
                     )
 
 
+@route('/')
 @route('/db_view')
 @auth_required()
 def db_view():
@@ -72,25 +73,25 @@ def db_view():
                     keyword=key)
 
 
-@route('/server_tree')
-@auth_required()
-def server_tree():
-    from over_view import get_db_trees
-    all_trees = get_db_trees()
-    return template("server_tree", all_trees=json_dumps(all_trees), media_prefix=media_prefix)
+# @route('/server_tree')
+# @auth_required()
+# def server_tree():
+#     from over_view import get_db_trees
+#     all_trees = get_db_trees()
+#     return template("server_tree", all_trees=json_dumps(all_trees), media_prefix=media_prefix)
 
 
-@route('/')
-@auth_required()
-def server_view():
-    return template("main", media_prefix=media_prefix)
+# @route('/')
+# @auth_required()
+# def server_view():
+#     return template("main", media_prefix=media_prefix)
 
 
-@route('/overview')
-@auth_required()
-def overview():
-    from over_view import get_redis_info
-    return template('overview', redis_info=get_redis_info(), media_prefix=media_prefix)
+# @route('/overview')
+# @auth_required()
+# def overview():
+#     from over_view import get_redis_info
+#     return template('overview', redis_info=get_redis_info(), media_prefix=media_prefix)
 
 
 @route('/view')
@@ -113,36 +114,36 @@ def view():
         return '  This key does not exist.'
 
 
-@route('/edit')
-@auth_required()
-def edit():
-    from data_change import edit_value
-    key = request.GET.get('key', None)
-    value = request.GET.get('value', None)
-    type = request.GET.get('type', None)
-    new = request.GET.get('new', None)
-    score = request.GET.get('score', None)
-    cl, cur_server_index, cur_db_index = get_cl()
-    edit_value(key, value, new, score, type, cl)
-    if new:
-        return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
-    else:
-        return '<script type=text/javascript> alert("error: missing new value");'\
-               'window.location.href=document.referrer</script>'
+# @route('/edit')
+# @auth_required()
+# def edit():
+#     from data_change import edit_value
+#     key = request.GET.get('key', None)
+#     value = request.GET.get('value', None)
+#     type = request.GET.get('type', None)
+#     new = request.GET.get('new', None)
+#     score = request.GET.get('score', None)
+#     cl, cur_server_index, cur_db_index = get_cl()
+#     edit_value(key, value, new, score, type, cl)
+#     if new:
+#         return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
+#     else:
+#         return '<script type=text/javascript> alert("error: missing new value");'\
+#                'window.location.href=document.referrer</script>'
 
 
-@route('/add')
-@auth_required()
-def add():
-    from data_change import add_value
-    key = request.GET.get('key', None)
-    value = request.GET.get('value', None)
-    type = request.GET.get('type', None)
-    name = request.GET.get('name', None)
-    score = request.GET.get('score', None)
-    cl, cur_server_index, cur_db_index = get_cl()
-    add_value(key, value, name, score, type, cl)
-    return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
+# @route('/add')
+# @auth_required()
+# def add():
+#     from data_change import add_value
+#     key = request.GET.get('key', None)
+#     value = request.GET.get('value', None)
+#     type = request.GET.get('type', None)
+#     name = request.GET.get('name', None)
+#     score = request.GET.get('score', None)
+#     cl, cur_server_index, cur_db_index = get_cl()
+#     add_value(key, value, name, score, type, cl)
+#     return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
 
 
 def get_cl():
@@ -160,44 +161,44 @@ def get_cl():
     return cl, cur_server_index, cur_db_index
 
 
-@route('/delete')
-@auth_required()
-def delete():
-    from data_change import delete_key, delete_value
-    key = request.GET.get('key', '')
-    value = request.GET.get('value', None)
-    type = request.GET.get('type', None)
-    cur_scan_cursor = request.GET.get('cursor', None)
-    cl, cur_server_index, cur_db_index = get_cl()
-    if value:
-        delete_value(key, value, type, cl)
-    else:
-        delete_key(key, cl, cursor=cur_scan_cursor)
-        return '<script type=text/javascript> alert("ok")</script>'
-    return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
+# @route('/delete')
+# @auth_required()
+# def delete():
+#     from data_change import delete_key, delete_value
+#     key = request.GET.get('key', '')
+#     value = request.GET.get('value', None)
+#     type = request.GET.get('type', None)
+#     cur_scan_cursor = request.GET.get('cursor', None)
+#     cl, cur_server_index, cur_db_index = get_cl()
+#     if value:
+#         delete_value(key, value, type, cl)
+#     else:
+#         delete_key(key, cl, cursor=cur_scan_cursor)
+#         return '<script type=text/javascript> alert("ok")</script>'
+#     return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
 
 
-@route('/ttl')
-@auth_required()
-def ttl():
-    from data_change import change_ttl
-    cl, cur_server_index, cur_db_index = get_cl()
-    key = request.GET.get('key', None)
-    new = request.GET.get('new', None)
-    if new:
-        change_ttl(key, int(new), cl)
-    return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
+# @route('/ttl')
+# @auth_required()
+# def ttl():
+#     from data_change import change_ttl
+#     cl, cur_server_index, cur_db_index = get_cl()
+#     key = request.GET.get('key', None)
+#     new = request.GET.get('new', None)
+#     if new:
+#         change_ttl(key, int(new), cl)
+#     return '<script type=text/javascript> alert("ok");window.location.href=document.referrer</script>'
 
 
-@route('/rename')
-@auth_required()
-def rename():
-    from data_change import rename_key
-    cl, cur_server_index, cur_db_index = get_cl()
-    key = request.GET.get('key', None)
-    new = request.GET.get('new', None)
-    rename_key(key, new, cl)
-    return '<script type=text/javascript> alert("ok");parent.location.reload();</script>'
+# @route('/rename')
+# @auth_required()
+# def rename():
+#     from data_change import rename_key
+#     cl, cur_server_index, cur_db_index = get_cl()
+#     key = request.GET.get('key', None)
+#     new = request.GET.get('new', None)
+#     rename_key(key, new, cl)
+#     return '<script type=text/javascript> alert("ok");parent.location.reload();</script>'
 
 
 @route('/export')

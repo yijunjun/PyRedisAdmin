@@ -29,10 +29,7 @@
 				}
 			}
 		}
-		function do_Delete(){
-			parent.document.getElementById("cmsMainFrame").src = "/delete?s="+{{cur_server_index}}+"&db="+{{cur_db_index}}+"&key=&cursor="+ '{{pre_scan_cursor}}';
-			window.location.reload();
-		}
+		
 		function do_Search(){
 			var value = $.trim(key.get(0).value);
 			urlpara = "?s="+{{cur_server_index}}+"&db="+{{cur_db_index}}+"&k="+ value+"&cursor="+ '{{pre_scan_cursor}}';
@@ -55,11 +52,6 @@
 				parent.document.getElementById("cmsMainFrame").src="/view?s="+{{cur_server_index}}+"&db="+{{cur_db_index}}+"&key="+treeNode.id;
 			}
 		}
-		
-		function zTreeOnRemove(event, treeId, treeNode) {
-			parent.document.getElementById("cmsMainFrame").src = "/delete?s="+{{cur_server_index}}+"&db="+{{cur_db_index}}+"&key="+treeNode.id+"&cursor="+ '{{pre_scan_cursor}}';
-		}
-
 	
 		$(document).ready(function(){
 		var setting = {
@@ -71,7 +63,7 @@
 					}
 				},
 				edit: {
-					enable: true,
+					enable: false,
 					showRenameBtn: false
 				},
 				data: {
@@ -84,7 +76,6 @@
 				},
 				callback: {
 					onClick: onClick,
-					onRemove: zTreeOnRemove
 				}
 			};
 			var zNodes= {{!all_trees}};
@@ -163,7 +154,7 @@
 				
 				<a  href="javascript:;" onclick="do_Expand();" title="{{ trans('Expand all') }}"><i class="icon-folder-open"></i> {{ trans('Expand') }}</a> /
 				<a  href="javascript:;" onclick="do_Collapse();" title="{{ trans('Collapse all') }}"><i class="icon-folder-close"></i>{{ trans('Collapse') }}</a>
-				&nbsp;<a  href="javascript:;" onclick="do_Delete();" title="{{ trans('delete all') }}"><i class="icon-remove-sign"></i></a>  ({{count}} keys)
+				&nbsp; ({{count}} keys)
 	    	</div>
 	    </div>
 	    <div class="accordion-body" style="margin-top: 95px">
